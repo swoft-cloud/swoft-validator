@@ -108,12 +108,14 @@ class Validator
 
             $validateType = $validate['type'];
             $isGetValidateType = false;
+
+            //判断该validator是否支持GET方式
             if (in_array(ValidateType::GET, $validateType)) {
                 $isGetValidateType = true;
             }
 
             // Get query params
-            if ($requestMethod == 'GET' && $isGetValidateType) {
+            if ($requestMethod == RequestMethod::GET && $isGetValidateType) {
                 $query = $this->validateValidator($query, $type, $validateName, $params, $validator, $fields,
                     $unfields);
                 continue;
