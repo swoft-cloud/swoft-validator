@@ -85,11 +85,12 @@ class Validator
      * @param array $body
      * @param array $validates
      * @param array $query
+     * @param string $requestMethod
      *
      * @return array
      * @throws ValidatorException
      */
-    public function validateRequest(array $body, array $validates, array $query = []): array
+    public function validateRequest(array $body, array $validates, array $query = [], string $requestMethod=''): array
     {
         foreach ($validates as $validateName => $validate) {
             $validator = ValidatorRegister::getValidator($validateName);
@@ -106,9 +107,15 @@ class Validator
             $params   = $validate['params'] ?? [];
 
             $validateType = $validate['type'];
+            $isGetValidateType = false;
+
+            //判断该validator是否支持GET方式
+            if (in_array(ValidateType::GET, $validateType)) {
+                $isGetValidateType = true;
+            }
 
             // Get query params
-            if ($validateType == ValidateType::GET) {
+            if ($requestMethod == RequestMethod::GET && $isGetValidateType) {
                 $query = $this->validateValidator($query, $type, $validateName, $params, $validator, $fields,
                     $unfields);
                 continue;
