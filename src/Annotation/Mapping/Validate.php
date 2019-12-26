@@ -44,9 +44,9 @@ class Validate
     private $params = [];
 
     /**
-     * @var string
+     * @var array
      */
-    private $type = ValidateType::BODY;
+    private $type = [ValidateType::GET, ValidateType::BODY];
 
     /**
      * @var string
@@ -76,7 +76,7 @@ class Validate
             $this->params = $values['params'];
         }
         if (isset($values['type'])) {
-            $this->type = $values['type'];
+            $this->type = (array) $values['type'];
         }
         if (isset($values['message'])) {
             $this->message = $values['message'];
@@ -124,9 +124,9 @@ class Validate
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getType(): string
+    public function getType()
     {
         return $this->type;
     }
